@@ -1,0 +1,108 @@
+/**
+ * Copyright (c) 2016-2019 人人开源 All rights reserved.
+ *
+ * https://www.bioaitech.io
+ *
+ * 版权所有，侵权必究！
+ */
+
+package io.bioaitech.modules.sys.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.bioaitech.common.annotation.DataFilter;
+import io.bioaitech.modules.sys.dao.SysRoleDao;
+import io.bioaitech.modules.sys.entity.SysRoleEntity;
+import io.bioaitech.modules.sys.service.*;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
+
+
+/**
+ * 角色
+ *
+ * @author Mark sunlightcs@gmail.com
+ */
+@Service("sysRoleService")
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> implements io.bioaitech.modules.sys.service.SysRoleService {
+	@Autowired
+	private io.bioaitech.modules.sys.service.SysRoleMenuService sysRoleMenuService;
+	@Autowired
+	private io.bioaitech.modules.sys.service.SysRoleDeptService sysRoleDeptService;
+	@Autowired
+	private io.bioaitech.modules.sys.service.SysUserRoleService sysUserRoleService;
+	@Autowired
+	private io.bioaitech.modules.sys.service.SysDeptService sysDeptService;
+
+	@Override
+	@DataFilter(subDept = true, user = false)
+	public io.bioaitech.common.utils.PageUtils queryPage(Map<String, Object> params) {
+		String roleName = (String)params.get("roleName");
+
+		IPage<SysRoleEntity> page = this.page(
+			new io.bioaitech.common.utils.Query<SysRoleEntity>().getPage(params),
+			new QueryWrapper<SysRoleEntity>()
+				.like(StringUtils.isNotBlank(roleName),"role_name", roleName)
+				.apply(params.get(io.bioaitech.common.utils.Constant.SQL_FILTER) != null, (String)params.get(io.bioaitech.common.utils.Constant.SQL_FILTER))
+		);
+
+		for(io.bioaitech.modules.sys.entity.SysRoleEntity sysRoleEntity : page.getRecords()){
+			io.bioaitech.modules.sys.entity.SysDeptEntity sysDeptEntity = sysDeptService.getById(sysRoleEntity.getDeptId());
+			if(sysDeptEntity != null){
+				sysRoleEntity.setDeptName(sysDeptEntity.getName());
+			}
+		}
+
+		return new io.bioaitech.common.utils.PageUtils(page);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void saveRole(io.bioaitech.modules.sys.entity.SysRoleEntity role) {
+		role.setCreateTime(new Date());
+		this.save(role);
+
+		//保存角色与菜单关系
+		sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
+
+		//保存角色与部门关系
+		sysRoleDeptService.saveOrUpdate(role.getRoleId(), role.getDeptIdList());
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void update(io.bioaitech.modules.sys.entity.SysRoleEntity role) {
+		this.updateById(role);
+
+		//更新角色与菜单关系
+		sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
+
+		//保存角色与部门关系
+		sysRoleDeptService.saveOrUpdate(role.getRoleId(), role.getDeptIdList());
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteBatch(Long[] roleIds) {
+		//删除角色
+		this.removeByIds(Arrays.asList(roleIds));
+
+		//删除角色与菜单关联
+		sysRoleMenuService.deleteBatch(roleIds);
+
+		//删除角色与部门关联
+		sysRoleDeptService.deleteBatch(roleIds);
+
+		//删除角色与用户关联
+		sysUserRoleService.deleteBatch(roleIds);
+	}
+
+
+}

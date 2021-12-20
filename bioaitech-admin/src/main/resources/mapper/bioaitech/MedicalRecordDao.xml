@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.bioaitech.modules.bioaitech.dao.MedicalRecordDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.bioaitech.modules.bioaitech.entity.MedicalRecordEntity" id="medicalRecordMap">
+        <result property="id" column="id"/>
+        <result property="medicalRecordId" column="medical_record_id"/>
+        <result property="tissueChipId" column="tissue_chip_id"/>
+        <result property="position" column="position"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="organ" column="organ"/>
+        <result property="pathologicalDiagnosis" column="pathological_diagnosis"/>
+        <result property="grade" column="grade"/>
+        <result property="tnm" column="tnm"/>
+        <result property="stage" column="Stage"/>
+        <result property="organizationType" column="organization_type"/>
+        <result property="surgeryDate" column="surgery_date"/>
+        <result property="clinicalDiagnosis" column="clinical_diagnosis"/>
+        <result property="briefMedicalHistory" column="brief_medical_history"/>
+        <result property="tumorFrom" column="tumor_from"/>
+        <result property="distantMetastasis" column="distant_metastasis"/>
+        <result property="lymphNodeMetastasis" column="lymph_node_metastasis"/>
+        <result property="positiveLymphNodes" column="positive_lymph_nodes"/>
+        <result property="tumorSize" column="tumor_size"/>
+        <result property="tumorSite" column="tumor_site"/>
+        <result property="materialDescription" column="material_description"/>
+        <result property="ihcMarker1" column="ihc_marker1"/>
+        <result property="ihcMarker2" column="ihc_marker2"/>
+        <result property="ihcMarker3" column="ihc_marker3"/>
+        <result property="ihcMarker4" column="ihc_marker4"/>
+        <result property="ihcMarker5" column="ihc_marker5"/>
+    </resultMap>
+
+
+</mapper>

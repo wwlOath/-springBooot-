@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>病历表</title>
+		<#include "/header.html">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+			<#if shiro.hasPermission("bioaitech:medicalrecord:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("bioaitech:medicalrecord:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("bioaitech:medicalrecord:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+														                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.medicalRecordId" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.tissueChipId" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">位置</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.position" placeholder="位置"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.age" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.sex" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">器官</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.organ" placeholder="器官"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">病理诊断</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.pathologicalDiagnosis" placeholder="病理诊断"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.grade" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.tnm" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.stage" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">组织类型</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.organizationType" placeholder="组织类型"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">手术日期</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.surgeryDate" placeholder="手术日期"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">临床诊断</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.clinicalDiagnosis" placeholder="临床诊断"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">简要病史</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.briefMedicalHistory" placeholder="简要病史"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">肿瘤来自原发/转移</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.tumorFrom" placeholder="肿瘤来自原发/转移"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">远处转移部位</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.distantMetastasis" placeholder="远处转移部位"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">淋巴结转移情况</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.lymphNodeMetastasis" placeholder="淋巴结转移情况"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">阳性淋巴结数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.positiveLymphNodes" placeholder="阳性淋巴结数"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">肿瘤大小</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.tumorSize" placeholder="肿瘤大小"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">肿瘤部位</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.tumorSite" placeholder="肿瘤部位"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">取材描述</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.materialDescription" placeholder="取材描述"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.ihcMarker1" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.ihcMarker2" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.ihcMarker3" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.ihcMarker4" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="medicalRecord.ihcMarker5" placeholder=""/>
+                        </div>
+                    </div>
+							            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" id="btnSaveOrUpdate" data-loading-text="保存中..." @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/bioaitech/medicalrecord.js?_${.now?long}"></script>
+</body>
+</html>

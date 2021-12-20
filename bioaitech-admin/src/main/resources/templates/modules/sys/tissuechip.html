@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>组织芯片表</title>
+		<#include "/header.html">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+			<#if shiro.hasPermission("sys:tissuechip:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("sys:tissuechip:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("sys:tissuechip:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+														                    <div class="form-group">
+                        <div class="col-sm-2 control-label">芯片编号</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.chipId" placeholder="芯片编号"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">图片编号</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.imgId" placeholder="图片编号"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">芯片说明</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.chipExplanation" placeholder="芯片说明"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">样本描述</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.sampleDescription" placeholder="样本描述"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">取样方式</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.samplingMethod" placeholder="取样方式"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">行数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.rowNumber" placeholder="行数"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">列数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.colNumber" placeholder="列数"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">点数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.points" placeholder="点数"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">例数</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.casesNumber" placeholder="例数"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">点样直径</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.dotDiameter" placeholder="点样直径"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">组织固定方式</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.organizationalFixation" placeholder="组织固定方式"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.qaQc" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">种属</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.species" placeholder="种属"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">所属分类</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.categoryId" placeholder="所属分类"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">应用</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.useTo" placeholder="应用"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">注意事项</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.precautions" placeholder="注意事项"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">TNM说明</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.tnmDescription" placeholder="TNM说明"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">是否热卖</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.isHotSell" placeholder="是否热卖"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">是否新品</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.isNew" placeholder="是否新品"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label">是否上架</div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.isPutaway" placeholder="是否上架"/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.isDeleted" placeholder=""/>
+                        </div>
+                    </div>
+											                    <div class="form-group">
+                        <div class="col-sm-2 control-label"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="tissueChip.createTime" placeholder=""/>
+                        </div>
+                    </div>
+							            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" id="btnSaveOrUpdate" data-loading-text="保存中..." @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/sys/tissuechip.js?_${.now?long}"></script>
+</body>
+</html>

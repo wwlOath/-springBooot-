@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.bioaitech.modules.bioaitech.dao.TissueSectionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.bioaitech.modules.bioaitech.entity.TissueSectionEntity" id="tissueSectionMap">
+        <result property="id" column="id"/>
+        <result property="sectionId" column="section_id"/>
+        <result property="tissuesOrgans" column="tissues_organs"/>
+        <result property="species" column="species"/>
+        <result property="pathologicDiagnosis" column="pathologic_diagnosis"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="specification" column="specification"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isPutaway" column="is_putaway"/>
+    </resultMap>
+
+
+</mapper>

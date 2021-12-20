@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.bioaitech.modules.bioaitech.dao.TissueChipImgguidDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.bioaitech.modules.bioaitech.entity.TissueChipImgguidEntity" id="tissueChipImgguidMap">
+        <result property="id" column="id"/>
+        <result property="chipId" column="chip_id"/>
+        <result property="imgGuid" column="img_guid"/>
+    </resultMap>
+
+
+</mapper>

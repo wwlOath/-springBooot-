@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.bioaitech.modules.bioaitech.dao.OrderDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.bioaitech.modules.bioaitech.entity.OrderEntity" id="orderMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="buyerName" column="buyer_name"/>
+        <result property="buyerPhone" column="buyer_phone"/>
+        <result property="buyerAddress" column="buyer_address"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="paymentStatus" column="payment_status"/>
+        <result property="deliveryStatus" column="delivery_status"/>
+        <result property="payable" column="payable"/>
+        <result property="remarks" column="remarks"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+
+</mapper>

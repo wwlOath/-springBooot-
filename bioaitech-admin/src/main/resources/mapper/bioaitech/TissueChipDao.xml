@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.bioaitech.modules.bioaitech.dao.TissueChipDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.bioaitech.modules.bioaitech.entity.TissueChipEntity" id="tissueChipMap">
+        <result property="id" column="id"/>
+        <result property="chipId" column="chip_id"/>
+        <result property="imgId" column="img_id"/>
+        <result property="chipExplanation" column="chip_explanation"/>
+        <result property="sampleDescription" column="sample_description"/>
+        <result property="samplingMethod" column="sampling_method"/>
+        <result property="rowNumber" column="row_number"/>
+        <result property="colNumber" column="col_number"/>
+        <result property="points" column="points"/>
+        <result property="casesNumber" column="cases_number"/>
+        <result property="dotDiameter" column="dot_diameter"/>
+        <result property="organizationalFixation" column="organizational_fixation"/>
+        <result property="qaQc" column="qa_qc"/>
+        <result property="species" column="species"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="useTo" column="use_to"/>
+        <result property="precautions" column="precautions"/>
+        <result property="tnmDescription" column="tnm_description"/>
+        <result property="isHotSell" column="is_hot_sell"/>
+        <result property="isNew" column="is_new"/>
+        <result property="isPutaway" column="is_putaway"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="queryPageList" resultType="io.bioaitech.modules.bioaitech.vo.res.TissueChipResVO">
+        SELECT
+        tc.id,tc.chip_id,tc.img_id,tc.is_putaway,tc.is_hot_sell,tc.is_new,
+        tc.category_id,tc.points,tc.cases_number,tc.species,tc.create_time,
+        max( CASE WHEN tct.NAME = '检测片' THEN tct.price ELSE 0 END ) AS 'test_price',
+        max( CASE WHEN tct.NAME = 'H&amp;E染色片' THEN tct.price ELSE 0 END ) AS 'HE_price',
+        max( CASE WHEN tct.NAME = '预实验片' THEN tct.price ELSE 0 END ) AS 'pre_test_price',
+        max( CASE WHEN tct.NAME = '检测片' THEN tct.inventory ELSE 0 END ) AS 'test_inventory',
+        max( CASE WHEN tct.NAME = 'H&amp;E染色片' THEN tct.inventory ELSE 0 END ) AS 'HE_inventory',
+        max( CASE WHEN tct.NAME = '预实验片' THEN tct.inventory ELSE 0 END ) AS 'pre_test_inventory'
+        FROM
+        tissue_chip tc
+        LEFT JOIN tissue_chip_type tct ON tc.id = tct.tissue_chip_id
+        where tc.is_deleted = 0
+        <if test="query != '' and query != null">
+            and( tc.chip_id like CONCAT('%',#{query},'%') or tc.chip_explanation like CONCAT('%',#{query},'%')
+            or tc.cases_number like CONCAT('%',#{query},'%') or tc.points like CONCAT('%',#{query},'%') )
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+            and tc.category_id = #{categoryId}
+        </if>
+        <if test="from != null and to != null">
+            and tc.create_time BETWEEN #{from} AND #{to}
+        </if>
+        GROUP BY
+        tc.id
+    </select>
+</mapper>
