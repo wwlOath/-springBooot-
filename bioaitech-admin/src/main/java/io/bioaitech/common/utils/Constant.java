@@ -1,8 +1,6 @@
 package io.bioaitech.common.utils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -51,7 +49,7 @@ public class Constant {
 
     public static final String XLS = "xls";
 
-    public static final String XLSX = "xlsx";
+    public static final String XLSX = "sourcefile/xlsx";
     /**
      * 未支付
      */

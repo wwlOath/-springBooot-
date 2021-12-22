@@ -19,6 +19,7 @@ public class TissueChipReqVO extends TissueChipEntity implements Serializable {
 	private static final long serialVersionUID = 872789642713645102L;
     /**
      * 实验检测片价格
+     * BigDecimal(int)  创建一个具有参数所指定整数值的对象。
      */
     private BigDecimal testPrice;
 

@@ -16,5 +16,7 @@ import java.util.Map;
 public interface TissueChipTypeService extends IService<TissueChipTypeEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    Integer getIdByParam(String name, String tissueChipId);
 }
 

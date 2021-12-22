@@ -26,4 +26,11 @@ public class TissueChipTypeServiceImpl extends ServiceImpl<TissueChipTypeDao, Ti
         return new PageUtils(page);
     }
 
+    @Override
+    public Integer getIdByParam(String name, String tissueChipId) {
+        QueryWrapper<TissueChipTypeEntity> ew = new QueryWrapper<>();
+        ew.eq("name", name);
+        ew.eq("tissue_chip_id", tissueChipId);
+        return this.getOne(ew).getId();
+    }
 }
